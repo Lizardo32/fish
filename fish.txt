@@ -1,0 +1,30 @@
+About
+====-=-=---- - -
+-Simple game made from scratch with JS,HTML and CSS. The objective is to kill as many creatures as possible before eventually dying.
+-It was the first time I worked with JS. Very barebones. Might improve it a bit in the future.
+
+Values
+====-=-=---- - -
+HP > Health. Displayed on the left. Starts at 10.
+DM > Damage. Not displayed. Starts at 5.
+FHP > Enemy Health. Health. Displayed on the right. Starts at 10.
+FDM > Enemy Damage. Not displayed. Starts at 5.
+IT > Items. Starts at 5.
+
+Controls
+====-=-=---- - -
+*f > Attacks the creature (random number where dm is max)
+*i > Uses an item (hp+10 or dm+5, can have no effect)
+*s > Skips a turn (useless)
+*h > Open this file (help)
+
+Playing
+====-=-=---- - -
+-Killing one of them will grant you one more item.
+-Spamming f and i might work, but try analyzing the situation. 50% Intuition, 50% Luck.
+
+Changelog
+====-=-=---- - -
+0.9
+==-=-- -
+*initial release
