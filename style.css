@@ -1,0 +1,37 @@
+@media(prefers-color-scheme:light){
+ *{color:black;}
+ body{background-color:white;}
+ ::selection{color:white; background-color:black;}
+}
+@media(prefers-color-scheme:dark){
+ *{color:white;}
+ body{background-color:black;}
+ ::selection{color:black; background-color:white;}
+}
+body{
+ font-size:16px;
+ text-align:center;
+ image-rendering:pixelated;
+}
+div{
+ border: 4px dashed #777777;
+ padding: 16px;
+ margin: 0 auto;
+}
+img{
+ display: inline-block;
+}
+a{
+ text-decoration:underline;
+ text-decoration-thickness:1px;
+ cursor:pointer;
+}
+*{
+ font-family:monospace;
+ -webkit-tap-highlight-color:transparent;
+}
+::selection {
+ color:black;
+ background-color:white;
+}
+*:focus{outline:none;}
