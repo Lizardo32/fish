@@ -14,5 +14,5 @@ progress: `5%`
 * lore & plot
 *
 
-[[play now]](https://lizard32.neocities.org/stuff/fish/)  
+[[play now]](https://lizard32.neocities.org/fish/)  
 [[more info]](fish.txt)
