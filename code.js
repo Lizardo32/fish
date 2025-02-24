@@ -1,133 +1,191 @@
-const spd=500;
-var msg,nm,kill=0,tu=0,lv=0,it=4;
-var hp=0,sp=10,dm=5,fh=0,fd=0;
-var hpi=0,spi=0,dmi=0;
+//fish game v0.8
+//code by lizard32
+//====-=-=---- - -
+//*backgrounds
+//*particles
+//*ownaudio
+//*h>analyze
+//*variety
+//*upgrade++
+//*titlecard
+//*score
+//*randommessages
+//*options
+//====-=-=---- - -
 
-function rn(n){var v=Math.floor(Math.random()*n);return v;}
-function st(){txt.innerHTML='HP:'+hp+' SP:'+Math.floor(sp)+'\nitem:'+it+msg;}
-function bh(){a.innerHTML='';b.innerHTML='';c.innerHTML='';d.innerHTML='';}
+//system variables
+const spd=500; var msg,dc,bgmf,sfxf;
+//game variables
+var score=0, kill=0, turn=0;
+//player variables
+var hp=10, sp=10, dm=10, it=10, xp=0;
+//enemy variables
+var ehp,edm;
+
+function st(){ch(txt,'&#x2764;'+hp+' &#x2605;'+sp+' &#x2625;'+it+'\n'+msg);}
+
+function ch(a,b){a.innerHTML=b;} //change text
+function cc(a,b){a.setAttribute("onclick",b);} //change onclick
+function rn(n){var v=Math.floor(Math.random()*n); return v;} //random number
+function bh(){a.innerHTML=''; b.innerHTML=''; c.innerHTML=''; d.innerHTML='';} //hide buttons
+function sfx(f){sfxf=new Audio('sfx/'+f); sfxf.volume=0.8; sfxf.play();} //play sound
+function bgm(f){if(bgmf!=null){bgmf.pause();}bgmf=new Audio('bgm/'+f); bgmf.volume=0.5; bgmf.play(); bgmf.loop=true;} //play bgm
 function sleep(ms){return new Promise(resolve => setTimeout(resolve, ms));}
+function pc(a,b){a=a*100; return a/b} //percentage (remove?)
 
-function sfx(w){
- var audio=new Audio('sfx/'+w);
- audio.play();
-}
-
-function main(){
+//init-game
+function init(){
  img=document.getElementById('img');
  txt=document.getElementById('txt');
  a=document.getElementById('a');
  b=document.getElementById('b');
  c=document.getElementById('c');
  d=document.getElementById('d');
- newfish();
- turn();
+ if(bgmf!=undefined){bgmf.pause();}
+ bgm('0'+rn(6))
+ console.clear();
+ newfoe();
 }
 
-function turn(){
- img.style.display='';
- a.innerHTML='f';
- b.innerHTML='i';
- c.innerHTML='s';
- d.innerHTML='h';
- a.setAttribute("onclick","bt(0)");
- msg='';
- st();  
+//reset
+function rebirth(){
+ score=turn=kill=0
+ hp=10;sp=10;dm=10
+ it=10;xp=0
+ init()
 }
 
-async function fish(){
- if(fh<1){
+//end turn
+function end(){
+ img.style.display=''
+ ch(a,'f'); ch(b,'i')
+ ch(c,'s'); ch(d,'h')
+ cc(a,'bt(0)'); cc(b,'bt(1)')
+ cc(c,'bt(2)'); cc(d,'bt(3)')
+ msg=''
+ st()
+}
+
+
+//main-function
+async function main(){
+ if(ehp<1){
   sfx('kill');
   img.style.display='none';
-  txt.innerHTML='&#x2713;\n\nfish died\n'+tu+' turns';
-  a.setAttribute("onclick","newfish()"); a.innerHTML='continue';
+  ch(txt,'&#x2713;\n\nfish died\n'+turn+' turns');
+  it++; ch(a,'continue');
+  if(xp>2){a.setAttribute("onclick","upgrade()");}
+  else{a.setAttribute("onclick","newfoe()");}
  }
  else{
-  nm=rn(fd);
-  if(nm>0){
+  dc=rn(edm);
+  if(dc>0){
    sfx('hurt');
-   msg='\n-'+nm;
-   hp-=nm
-   sp+=nm
+   msg='-'+dc;
+   hp-=dc
+   sp+=Math.floor(dc)
   }
-  else{sfx('miss');msg='\nmiss';}
+  else{sfx('miss');msg='miss';}
   st();
   if(hp<1){death();}
   else{
    await sleep(spd);
-   turn()
+   end()
   }
  }
 }
 
-function foe(name){
- if(name=='fish'){
-  fh=(10);
-  fd=5;
- }
- console.log('foe:'+fh+'.'+fd)
+//upgrade
+function upgrade(){
+sfx("level"); xp=0;
+ch(txt,"&#x262E;\n\nlevel up");
+ch(a,'hp+'); cc(a,'sfx("up");hp+=10;newfoe()');
+ch(b,'dm+'); cc(b,'sfx("up");dm+=5;newfoe()');
+ch(c,'sp+'); cc(c,'sfx("up");sp+=10;newfoe()');
+ch(d,''); cc(d,'');
 }
 
-function newfish(){
- lv++;kill++;hp+=10;it++
- if(kill<5){foe('fish')}
- else{}
- turn();
+//new-enemy
+function newfoe(){
+ kill++; xp++;
+ ehp=5+rn(kill*5); edm=5+rn(kill);
+ console.log("foe:"+ehp+"."+edm)
+ end();
 }
 
+//game-over
 function death(){
  sfx('death');
+ bgmf.pause();
  img.style.display='none';
- txt.innerHTML='&#x271D;\n\nyou died\n'+kill+' kills';
- a.setAttribute("onclick",'location.reload()'); a.innerHTML='reload';
+ ch(txt,'&#x271D;\n\nyou died\n'+kill+' kills');
+ ch(a,'reload'); cc(a,'rebirth()');
 }
 
-function luck(){
- if(it>0){it--; nm=rn(4);
-  sfx('item');
-  if(nm<1){msg='\n...';}
-  if(nm>0&&nm<3){msg='\nhealth++'; hp+=(10*lv);}
-  if(nm>2&&nm<5){msg='\ndamage++!'; dm+=5;}
- }
- else{sfx('miss');msg='\nno';}
- st();
-}
-
+//fight
 function fight(){
- nm=rn(dm);
- if(nm>0){
+ dc=rn(dm);
+ if(dc>0){
   sfx('hit');
-  msg='\n-'+nm;
-  fh-=nm;
+  msg='-'+dc;
+  ehp-=dc;
  }
- else{sfx('miss');msg='\nmiss';}
+ else{sfx('miss');msg='miss';}
  st();
 }
 
+//item
+function item(){
+ if(it>0){
+  it--; sfx('item')
+  var dc=rn(3);
+  if(dc==0){msg='...';}
+  if(dc==1){msg='hp+'; hp+=10;}
+  if(dc==2){msg='dm+'; dm+=5;}
+  if(dc==3){sp='hp+'; sp+=10;}
+ }
+ else{msg='no';}
+ st();
+}
 
-async function spell(){
+//skill
+async function skill(){
  if(sp>9){
-  sp-=10; nm=rn(4);
-  //msg='\nspell!';st();
-  sfx('item');
-  if(nm<1){
-   sfx('hit');
-   nm=dm+rn(dm)
-   msg='\n*-'+nm+'*';
-   fh-=nm;
-  }
-  if(nm>0&&nm<3){msg='\nhealth++'; hp+=(10*lv);}
-  if(nm>2&&nm<5){msg='\ndamage++!'; dm+=5;}
+  sp-=10; sfx('skill')
+  msg='skill'; sfx('up'); st();
+  await sleep(spd/2)
+  fight()
+  await sleep(spd/2)
+  fight()
+  await sleep(spd/2)
+  fight()
+  await sleep(spd/2)
+  fight()
+  await sleep(spd)
+  msg=''; st()
+  main()
  }
- else{sfx('miss');msg='\nno';}
- st();
+ else{
+  msg='no'; st()
+  await sleep(spd)
+  main()
+ } 
 }
 
+//help
+function help(){
+//todo//////////////////////////////////////////////////////////////
+}
+
+//buttons
 async function bt(i){
- bh(); tu++;
- if(i==0){fight();}
- if(i==1){luck();}
- if(i==2){spell();}
- await sleep(spd);
- fish();
+ bh(); turn++;
+ if(i==0){fight()}
+ if(i==1){item()}
+ if(i==2){skill()}
+ if(i==3){help()}
+ if(i!=2){
+  await sleep(spd);
+  main();
+ }
 }

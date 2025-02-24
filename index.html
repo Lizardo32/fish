@@ -1,48 +1,20 @@
 <!DOCTYPE html>
-<html><head>
-<meta http-equiv="content-type" content="text/html; charset=windows-1252">
+<html>
+ <head>
   <title>fish</title>
   <meta name="viewport" content="width=device-width">
   <link rel="shortcut icon" sizes="16x16" href="fish.png">
   <link rel="stylesheet" href="style.css">
   <script src="code.js"></script> 
-  <style>
-   @media(orientation:portrait){
-    *{font-size:10vw; line-height:10vw;}
-     img{width:20vw}
-    textarea{border-width:1vw;}
-   }
-   @media(orientation:landscape){
-    *{font-size:2.5vw; line-height:2.5vw;}
-     img{width:10vw}
-     textarea{border-width:0.25vw;}
-   }
-   body{ 
-    user-select:none; top:50%;
-    position:absolute; left:50%;
-    transform:translate(-50%,-50%);
-   }
-   *{
-    background-color:transparent;
-    font-family:monospace;
-    padding:0px; margin:0px;
-    text-align:center;
-   }
-   a{text-decoration-thickness:0.25vw;}
-   div{
-    width:16vw;
-    border-color:white;
-   }
-  </style>
  </head>
- <body onload="main()">
+ <body onload="init()">
   <div>
    <img id="img" src="fish.png" draggable="false"><br>
-   <pre id="txt">10.10</pre>
-   <a onclick="bt(0)" id="a">f</a>
-   <a onclick="bt(1)" id="b">i</a>
-   <a onclick="bt(2)" id="c">s</a>
-   <a onclick="window.open('fish.txt','help','toolbar=no,width=320,height=240');" id="d">h</a>
+   <pre id="txt"></pre>
+   <a onclick="bt(0)" id="a"></a>
+   <a onclick="bt(1)" id="b"></a>
+   <a onclick="bt(2)" id="c"></a>
+   <a onclick="bt(3)" id="d"></a>
   </div>
  </body>
 </html>

@@ -1,3 +1,4 @@
+/*COLOR SCHEMES*/
 @media(prefers-color-scheme:light){
  *{color:black;}
  body{background-color:white;}
@@ -8,14 +9,30 @@
  body{background-color:black;}
  ::selection{color:black; background-color:white;}
 }
+
+/*RESOLUTIONS*/
+@media(orientation:portrait){
+ *{font-size:4vw; line-height:4vw;}
+ img{width:20vw} div{border:1vw; width:32vw; height:32vw;}
+ a{text-decoration-thickness:0.5vw;}
+}
+@media(orientation:landscape){
+ *{font-size:2vw; line-height:2vw;}
+ img{width:10vw;} div{border:1vw; width:16vw; height:16vw;}
+ a{text-decoration-thickness:0.25vw;}
+}
+/*STYLE*/
 body{
- font-size:16px;
  text-align:center;
  image-rendering:pixelated;
+ user-select:none; top:50%;
+ position:absolute; left:50%;
+ transform:translate(-50%,-50%);
 }
 div{
- border: 4px dashed #777777;
- padding: 16px;
+ border-style: dashed;
+ border-color: white;
+ padding: 0.5vw;
  margin: 0 auto;
 }
 img{
@@ -23,15 +40,15 @@ img{
 }
 a{
  text-decoration:underline;
- text-decoration-thickness:1px;
  cursor:pointer;
 }
 *{
  font-family:monospace;
+ padding:0px; margin:0px;
  -webkit-tap-highlight-color:transparent;
 }
+*:focus{outline:none;}
 ::selection {
  color:black;
  background-color:white;
 }
-*:focus{outline:none;}
